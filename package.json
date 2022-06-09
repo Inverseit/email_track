@@ -1,0 +1,32 @@
+{
+  "name": "fastify-typescript-starter",
+  "version": "4.1.0",
+  "description": "Fastify TypeScript starter repository",
+  "scripts": {
+    "watch": "tsc --watch --preserveWatchOutput --pretty",
+    "dev": "cross-env NODE_ENV=development nodemon | pino-pretty",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "build": "rimraf dist && tsc",
+    "start": "node dist/index.js | pino-pretty"
+  },
+  "author": "Ulan Seitkaliyev",
+  "license": "MIT",
+  "dependencies": {
+    "@fastify/cors": "^7.0.0",
+    "@types/mongoose": "^5.11.97",
+    "dotenv": "^16.0.1",
+    "fastify": "^3.28.0",
+    "mongoose": "^6.3.6",
+    "pino": "^7.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.41",
+    "cross-env": "^7.0.3",
+    "fastify-tsconfig": "^1.0.1",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.6.2",
+    "rimraf": "^3.0.2",
+    "tsconfig-paths": "^3.14.1",
+    "typescript": "^4.6.3"
+  }
+}
