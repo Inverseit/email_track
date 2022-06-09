@@ -4,7 +4,7 @@ import db from "./database/database";
 import router from "./routes/index";
 import "dotenv/config";
 
-const Port = process.env.FASTIFY_PORT || 7000;
+const FASTIFY_PORT = process.env.FASTIFY_PORT || 7000;
 const uri = process.env.MONGODB_URI;
 
 if (!uri) {
@@ -21,8 +21,15 @@ server.register(router);
 
 const start = async () => {
   try {
-    await server.listen(Port);
-    console.log("Server started successfully");
+    await server.listen(FASTIFY_PORT, "0.0.0.0", (error) => {
+      if (error) {
+        process.exit(1);
+      }
+    });
+    
+    
+    console.log(`🚀  Fastify server running on port ${FASTIFY_PORT}`);
+    console.log(`Route index: /`);
   } catch (err) {
     server.log.error(err);
     process.exit(1);
