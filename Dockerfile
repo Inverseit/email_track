@@ -4,8 +4,8 @@ COPY package*.json ./
 COPY yarn.lock ./
 COPY tsconfig*.json ./
 COPY src src
-EXPOSE 3006
 RUN yarn install
 RUN yarn tsc
 RUN yarn build
+EXPOSE 3006
 CMD [ "yarn", "start"]

@@ -10,6 +10,7 @@ export interface ImageAttrs {
   reciever_email: string;
   records: Record[];
   _id: String;
+  title: String;
 }
 
 export interface ImageModel extends Model<ImageDocument> {
@@ -19,6 +20,7 @@ export interface ImageDocument extends Document {
   filename: string;
   sender_email: string;
   reciever_email: string;
+  title: string;
   records: Record[];
   createdAt: string;
   updatedAt: string;
@@ -43,6 +45,10 @@ export const imageSchema: Schema = new Schema(
       type: String,
       required: true,
     },
+    title: {
+        type: String,
+        required: true,
+      },
     records: [
       {
         timestamp: Number,

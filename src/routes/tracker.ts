@@ -1,10 +1,10 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import mongoose from "mongoose";
-import {image, baseUrl} from "../consts";
+import { sendNotificaton } from "../notifications/telegram";
+import { image, baseUrl } from "../consts";
 
 import { Db } from "../database/database";
 import { ImageAttrs } from "../database/models/images";
-
 
 // Declaration merging
 declare module "fastify" {
@@ -16,6 +16,7 @@ declare module "fastify" {
 interface createParams {
   sender_email: string;
   reciever_email: string;
+  title: string;
 }
 
 interface getParams {
@@ -52,7 +53,8 @@ export default async function indexController(server: FastifyInstance) {
           reciever_email: request.body.reciever_email,
           records: [],
           filename: id,
-          _id: id
+          _id: id,
+          title: request.body.title,
         };
 
         console.log(newTracker);
@@ -60,9 +62,8 @@ export default async function indexController(server: FastifyInstance) {
         const url = `${baseUrl}/tracker/image/${id}`;
         const tracker = await Image.addOne(newTracker);
 
-
         await tracker.save();
-        return reply.code(201).send({url});
+        return reply.code(201).send({ url });
       } catch (error) {
         request.log.error(error);
         return reply.status(500).send("Error");
@@ -83,14 +84,13 @@ export default async function indexController(server: FastifyInstance) {
         if (!tracker) {
           return reply.status(404).send("Not found");
         }
-
-        console.log(`${tracker.reciever_email} opened your email at ${new Date(Date.now())}`);
-
+        sendNotificaton(tracker);
         reply.header("Content-Type", "image/png").send(image);
         return;
       } catch (error) {
-        request.log.error(error);
-        return reply.send(400);
+        console.log(error);
+        reply.header("Content-Type", "image/png").send(image);
+        return;
       }
     }
   );
